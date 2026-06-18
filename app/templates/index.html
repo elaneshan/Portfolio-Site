@@ -27,6 +27,11 @@
                     <img src="./static/img/logo.svg" />
                 </div>
             </a>
+            <nav class="nav-links">
+            {% for label, url in nav_links %}
+                <a href="{{ url }}">{{ label }}</a>
+            {% endfor %}
+        </nav>
         </div>
     </header>
 

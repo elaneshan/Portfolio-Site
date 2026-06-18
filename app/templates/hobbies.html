@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link lang='sass' rel="stylesheet" href="../static/styles/main.css">
-    <link rel='icon' href='../static/img/favicon.ico' type='image/x-icon' />
+    <link rel='icon' href='/static/img/favicon.ico' type='image/x-icon' />
     <title>Hobbies - Elane Shane</title>
 </head>
 <body>
@@ -16,9 +16,14 @@
         <div class="nav-content">
             <a href="/">
                 <div class="nav-logo">
-                    <img src="../static/img/logo.svg" />
+                    <img src="/static/img/logo.svg" />
                 </div>
             </a>
+            <nav class="nav-links">
+            {% for label, url in nav_links %}
+                <a href="{{ url }}">{{ label }}</a>
+            {% endfor %}
+        </nav>
         </div>
     </header>
 
@@ -27,9 +32,9 @@
 
         <section class="hobby">
             <h2>F1 Racing</h2>
-            <p>I've been a Formula 1 fan for years, following the technical side of the sport as much as the racing itself. Recently got to see a Porsche GT3RS up close.</p>
+            <p>I've been a Formula 1 fan for years, but I don't really have any pictures to share. But here is an image of a GT3RS that my friend let me drive around!</p>
             <div class="hobby-image">
-                <img src="../static/img/gt3rs.jpg" alt="Porsche GT3RS">
+                <img src="/static/img/gt3rs.png" alt="Porsche GT3RS">
             </div>
         </section>
 
@@ -37,7 +42,7 @@
             <h2>Hiking</h2>
             <p>I enjoy getting outside and exploring trails when I can. Recently did a hike in the Bay Area with some great views.</p>
             <div class="hobby-image">
-                <img src="../static/img/hike-bay-area.jpg" alt="Bay Area hike views">
+                <img src="/static/img/hike-bay-area.jpg" alt="Bay Area hike views">
             </div>
         </section>
 
@@ -46,10 +51,9 @@
             <p>I'm really into specialty matcha and coffee. Always on the lookout for a good matcha spot.</p>
             <div class="carousel">
                 <div class="carousel-track">
-                    <img src="../static/img/matcha-1.jpg" alt="Matcha">
-                    <img src="../static/img/matcha-2.jpg" alt="Matcha">
-                    <img src="../static/img/matcha-3.jpg" alt="Matcha">
-                    <img src="../static/img/matcha-4.jpg" alt="Matcha">
+                    <img src="/static/img/matcha-1.png" alt="Matcha">
+                    <img src="/static/img/matcha-2.png" alt="Matcha">
+                    <img src="/static/img/matcha-3.png" alt="Matcha">
                 </div>
                 <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#8249;</button>
                 <button class="carousel-btn next" onclick="moveCarousel(1)">&#8250;</button>
@@ -58,20 +62,24 @@
     </div>
 
     <script>
-        let current = 0;
-        const images = document.querySelectorAll('.carousel-track img');
+        document.addEventListener("DOMContentLoaded", () => {
+            let current = 0;
+            const images = document.querySelectorAll('.carousel-track img');
 
-        function showImage(index) {
-            images.forEach(img => img.style.display = 'none');
-            images[index].style.display = 'block';
-        }
+            function showImage(index) {
+                images.forEach(img => img.style.display = 'none');
+                if (images[index]) {
+                    images[index].style.display = 'block';
+                }
+            }
 
-        function moveCarousel(direction) {
-            current = (current + direction + images.length) % images.length;
+            window.moveCarousel = function(direction) {
+                current = (current + direction + images.length) % images.length;
+                showImage(current);
+            };
+
             showImage(current);
-        }
-
-        showImage(current);
+        });
     </script>
 </body>
 </html>
