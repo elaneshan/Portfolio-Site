@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="Hobbies - Elane Shane">
+    <meta property="og:description" content="My Hobbies">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link lang='sass' rel="stylesheet" href="../static/styles/main.css">
+    <link rel='icon' href='../static/img/favicon.ico' type='image/x-icon' />
+    <title>Hobbies - Elane Shane</title>
+</head>
+<body>
+    <header class="nav-bar">
+        <div class="nav-content">
+            <a href="/">
+                <div class="nav-logo">
+                    <img src="../static/img/logo.svg" />
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <h1>Hobbies</h1>
+
+        <section class="hobby">
+            <h2>F1 Racing</h2>
+            <p>I've been a Formula 1 fan for years, following the technical side of the sport as much as the racing itself. Recently got to see a Porsche GT3RS up close.</p>
+            <div class="hobby-image">
+                <img src="../static/img/gt3rs.jpg" alt="Porsche GT3RS">
+            </div>
+        </section>
+
+        <section class="hobby">
+            <h2>Hiking</h2>
+            <p>I enjoy getting outside and exploring trails when I can. Recently did a hike in the Bay Area with some great views.</p>
+            <div class="hobby-image">
+                <img src="../static/img/hike-bay-area.jpg" alt="Bay Area hike views">
+            </div>
+        </section>
+
+        <section class="hobby">
+            <h2>Specialty Matcha</h2>
+            <p>I'm really into specialty matcha and coffee. Always on the lookout for a good matcha spot.</p>
+            <div class="carousel">
+                <div class="carousel-track">
+                    <img src="../static/img/matcha-1.jpg" alt="Matcha">
+                    <img src="../static/img/matcha-2.jpg" alt="Matcha">
+                    <img src="../static/img/matcha-3.jpg" alt="Matcha">
+                    <img src="../static/img/matcha-4.jpg" alt="Matcha">
+                </div>
+                <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#8249;</button>
+                <button class="carousel-btn next" onclick="moveCarousel(1)">&#8250;</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let current = 0;
+        const images = document.querySelectorAll('.carousel-track img');
+
+        function showImage(index) {
+            images.forEach(img => img.style.display = 'none');
+            images[index].style.display = 'block';
+        }
+
+        function moveCarousel(direction) {
+            current = (current + direction + images.length) % images.length;
+            showImage(current);
+        }
+
+        showImage(current);
+    </script>
+</body>
+</html>
