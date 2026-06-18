@@ -104,8 +104,7 @@ def index():
         geo_locs = json.load(f)
 
     #base map (in the center)
-    base_map = folium.Map(location=[20, 0], zoom_start=2, tiles="CartoDB positron")
-
+    base_map = folium.Map(location=[20, 0], zoom_start=2, tiles="CartoDB positron", scrollWheelZoom=False)
     # un-visted grey, visted blue
     def style_function(feature):
         if feature['properties']['name'] in places:

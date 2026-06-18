@@ -96,6 +96,15 @@ body {
     font-weight: 700;
 }
 
+.page-content, .work-experience, .education, .travel-map, .about-me {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+
+.profile {
+    padding: 0 40px 50px 40px;
+}
 
 /*nav bar styling*/
 .nav-content {
@@ -188,4 +197,27 @@ body {
     height: 100%;
     border: none;
     border-radius: 8px;
+}
+
+
+.map-container {
+    width: 100%;
+    height: 450px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+/*footer*/
+footer {
+    background-color: #1d539f;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 60px;
+    font-size: 14px;
 }
