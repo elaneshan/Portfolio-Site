@@ -30,37 +30,28 @@
     <div class="page-content">
         <h1>Hobbies</h1>
 
-        <section class="hobby">
-            <h2>F1 Racing</h2>
-            <p>I've been a Formula 1 fan for years, but I don't really have any pictures to share. But here is an image of a GT3RS that my friend let me drive around!</p>
-            <div class="hobby-image">
-                <img src="/static/img/gt3rs.png" alt="Porsche GT3RS">
-            </div>
-        </section>
-
-        <section class="hobby">
-            <h2>Hiking</h2>
-            <p>I enjoy getting outside and exploring trails when I can. Recently did a hike in the Bay Area with some great views.</p>
-            <div class="hobby-image">
-                <img src="/static/img/hike-bay-area.jpg" alt="Bay Area hike views">
-            </div>
-        </section>
-
-        <section class="hobby">
-            <h2>Specialty Matcha</h2>
-            <p>I'm really into specialty matcha and coffee. Always on the lookout for a good matcha spot.</p>
-            <div class="carousel">
-                <div class="carousel-track">
-                    <img src="/static/img/matcha-1.png" alt="Matcha">
-                    <img src="/static/img/matcha-2.png" alt="Matcha">
-                    <img src="/static/img/matcha-3.png" alt="Matcha">
+        {% for hobby in all_hobbies %}
+            <section class="hobby">
+                <h2>{{ hobby.name }}</h2>
+                <p>{{ hobby.description }}</p>
+                {% if hobby.name == "Specialty Matcha" %}
+                <div class="carousel">
+                    <div class="carousel-track">
+                        {% for img in hobby.images %}
+                            <img src="/static/img/{{ img }}" alt="Matcha">
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#8249;</button>
+                    <button class="carousel-btn next" onclick="moveCarousel(1)">&#8250;</button>
                 </div>
-                <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#8249;</button>
-                <button class="carousel-btn next" onclick="moveCarousel(1)">&#8250;</button>
-            </div>
-        </section>
+                {% elif hobby.image %}
+                <div class="hobby-image">
+                    <img src="/static/img/{{ hobby.image }}" alt="{{ hobby.name }}">
+                </div>
+                {% endif %}
+            </section>
+        {% endfor %}
     </div>
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             let current = 0;
