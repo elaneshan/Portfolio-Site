@@ -1,6 +1,8 @@
 import os
 from flask import Flask, render_template, request
 from dotenv import load_dotenv
+import folium
+import json
 
 load_dotenv()
 app = Flask(__name__)
@@ -97,7 +99,32 @@ all_hobbies = [
 #pass it as an arg for rendering
 @app.route('/')
 def index():
-    return render_template('index.html', title="MLH Fellow", url=os.getenv("URL"), nav_links=all_pages, work_experience = work_experience, education_section = education_section )
+    places = ['India', 'Canada', 'United Arab Emirates', 'Singapore', 'South Korea', 'United States of America']
+    with open('app/static/world-countries.json', 'r') as f:
+        geo_locs = json.load(f)
+
+    #base map (in the center)
+    base_map = folium.Map(location=[20, 0], zoom_start=2, tiles="CartoDB positron", scrollWheelZoom=False)
+    # un-visted grey, visted blue
+    def style_function(feature):
+        if feature['properties']['name'] in places:
+            return {'fillColor': '#1d539f', 'color': '#1d539f', 'weight': 1, 'fillOpacity': 0.6}
+        else:
+            return {'fillColor': '#eaeded', 'color': '#bdc3c7', 'weight': 0.5, 'fillOpacity': 0.4}
+
+    # want to get the name of each location as well:
+    folium.GeoJson(
+        geo_locs,
+        style_function=style_function,
+        tooltip=folium.GeoJsonTooltip(
+            fields=['name'],  #get the name from JSOn
+            aliases=['Visited: '],
+            localize=True
+        )
+    ).add_to(base_map)
+    map_html = base_map._repr_html_()
+
+    return render_template('index.html', title="MLH Fellow", url=os.getenv("URL"), nav_links=all_pages, work_experience = work_experience, education_section = education_section, map_viz = map_html)
 @app.route('/hobbies')
 def hobbies():
     return render_template('hobbies.html', title="Hobbies", nav_links=all_pages, all_hobbies = all_hobbies)

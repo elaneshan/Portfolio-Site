@@ -43,7 +43,7 @@
         <h2>Software Engineering Student @ UCI</h2>
     </div>
 
-    <section class="About Me">
+    <section class="about-me">
         <h3>About Me</h3>
 
         <p>
@@ -98,6 +98,17 @@
     </div>
     {% endfor %}
 </section>
-
+<section class="travel-map">
+    <h2>Here is a map of all the places I've visited!</h2>
+    <p>
+         I've traveled across most of the US but some of the states I haven't visited are Oregon, Florida and Texas.
+    </p>
+    <div class="map-container">
+        {{ map_viz|safe }}
+    </div>
+</section>
+<footer>
+    <p>Elane Shane 2026</p>
+</footer>
 </body>
 </html>
