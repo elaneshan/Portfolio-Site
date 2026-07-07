@@ -175,3 +175,7 @@ def delete_time_line_post(post_id):
         return {'error': 'Post not found'}, 404
     post.delete_instance()
     return {'message': f'Post {post_id} deleted'}, 200
+
+@app.route('/timeline')
+def timeline():
+    return render_template('timeline.html', title="Timeline", nav_links=all_pages)

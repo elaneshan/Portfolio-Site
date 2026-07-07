@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="Personal Portfolio">
+    <meta property="og:description" content="My Personal Portfolio">
+    <meta property="og:url" content="{{ url }}">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link lang='sass' rel="stylesheet" href="./static/styles/main.css">
+    <link rel='icon' href='./static/img/favicon.ico' type='image/x-icon' />
+    <title>{{ title }}</title>
+
+    <style>
+        .timeline-section {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem;
+        }
+        #timeline-form input,
+        #timeline-form textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            font-family: 'Roboto', sans-serif;
+            box-sizing: border-box;
+        }
+        #timeline-form textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        .timeline-post {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .timeline-post img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .timeline-post .meta {
+            font-size: 0.85rem;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="nav-bar">
+        <div class="nav-content">
+            <a href="/">
+                <div class="nav-logo">
+                    <img src="./static/img/logo.svg" />
+                </div>
+            </a>
+            <nav class="nav-links">
+            {% for label, url in nav_links %}
+                <a href="{{ url }}">{{ label }}</a>
+            {% endfor %}
+        </nav>
+        </div>
+    </header>
+
+    <section class="timeline-section">
+        <h2>Timeline</h2>
+        <p>Updates from my school & career journey.</p>
+
+        <form id="timeline-form">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <textarea id="content" placeholder="What's new?" required></textarea>
+            <button type="submit">Post</button>
+        </form>
+
+        <div id="posts-container">
+            <p>Loading posts...</p>
+        </div>
+    </section>
+
+    <!-- for gravatar should have some kind of hashing to make sure that peoples
+     emails are leaked if anyone looks at the html of page
+      -->
+    <script>
+        const form = document.getElementById('timeline-form');
+        const postsContainer = document.getElementById('posts-container');
+
+        async function encoder(message) {
+            const data = new TextEncoder().encode(message.trim().toLowerCase());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        async function renderPost(post) {
+            const hash = await encoder(post.email);
+            const div = document.createElement('div');
+            div.className = 'timeline-post';
+            div.innerHTML = `
+                <img src="https://www.gravatar.com/avatar/${hash}?d=identicon">
+                <div>
+                    <strong>${post.name}</strong>
+                    <span class="meta">${post.created_at}</span>
+                    <div></div>
+                </div>
+            `;
+            div.querySelector('div > div').textContent = post.content;
+            return div;
+        }
+
+        async function loadPosts() {
+            const res = await fetch('/api/timeline_post');
+            const data = await res.json();
+
+            postsContainer.innerHTML = '';
+            if (data.timeline_posts.length === 0) {
+                postsContainer.innerHTML = '<p>No posts yet. Be the first!</p>';
+                return;
+            }
+            for (const post of data.timeline_posts) {
+                postsContainer.appendChild(await renderPost(post));
+            }
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new URLSearchParams();
+            formData.append('name', document.getElementById('name').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('content', document.getElementById('content').value);
+
+            await fetch('/api/timeline_post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+
+            form.reset();
+            loadPosts();
+        });
+
+        loadPosts();
+    </script>
+
+    <footer>
+        <p>Elane Shane 2026</p>
+    </footer>
+</body>
+
+</html>
