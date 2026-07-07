@@ -166,3 +166,12 @@ def get_time_line_post():
 			model_to_dict(p)
 			for p in TimelinePost.select().order_by(TimelinePost.created_at.desc())]
 }
+
+# bonus delete
+@app.route('/api/timeline_post/<int:post_id>', methods=['DELETE'])
+def delete_time_line_post(post_id):
+    post = TimelinePost.get_or_none(TimelinePost.id == post_id)
+    if post is None:
+        return {'error': 'Post not found'}, 404
+    post.delete_instance()
+    return {'message': f'Post {post_id} deleted'}, 200
