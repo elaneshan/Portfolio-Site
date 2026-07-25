@@ -1,8 +1,9 @@
 #!/bin/bash
 
 cd ~/Portfolio-Site
-git fetch && git reset origin/main --hard
-source python3-virtualenv/bin/activate
-pip install -r requirements.txt
-systemctl restart myportfolio
 
+git fetch && git reset origin/main --hard
+
+docker compose -f docker-compose.prod.yml down
+
+docker compose -f docker-compose.prod.yml up -d --build
