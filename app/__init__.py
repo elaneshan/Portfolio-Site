@@ -37,9 +37,10 @@ mydb.create_tables([TimelinePost])
 
 #add list of page data here so all pages can use
 all_pages = [
-        ("Home", "/"),
-        ("Hobbies", "/hobbies"),
-    ]
+    ("Home", "/"),
+    ("Hobbies", "/hobbies"),
+    ("Timeline", "/timeline"),
+]
 
 work_experience = [
     {
